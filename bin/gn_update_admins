@@ -15,7 +15,7 @@ use LWP::Simple qw/get getstore/;
 
 use Geo::GeoNames::DB::SQLite;
 
-unless( @ARGV < 1 )
+unless( @ARGV <= 1 )
 {
   print STDERR "usage: " . basename(__FILE__) . " [geonames_db]" . "\n";
   exit;
