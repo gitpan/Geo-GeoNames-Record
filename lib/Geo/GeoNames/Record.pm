@@ -44,7 +44,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( );
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Carp ();
 use Data::Dumper ();
@@ -246,7 +246,7 @@ sub names
 
 =item has_name( $name )
 
-    Returns true if the record has a name matching the C<$name> argument.
+Returns true if the record has a name matching the $name argument.
 
 =cut
 
@@ -258,7 +258,7 @@ sub has_name
 
 =item country()
 
-    Return the country of the record as a Geo::GeoNames::Record object.
+Return the country of the record as a Geo::GeoNames::Record object.
 
 =cut
 
@@ -278,7 +278,7 @@ sub country
 
 =item admin1()
 
-    Return the admin1 of the record as a Geo::GeoNames::Record object.
+Return the admin1 of the record as a Geo::GeoNames::Record object.
 
 =cut
 
@@ -328,7 +328,7 @@ sub admin2
 
 =item as_string()
 
-    Convert the record to a GeoNames.org record line.
+Convert the record to a GeoNames.org record line.
 
 =cut
 

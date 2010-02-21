@@ -53,6 +53,7 @@ my @tasks = ( { 'filename' => 'countryInfo.txt',      'code_col' => 0, 'id_col' 
 
 my $admin_code_to_record;
 
+my $n_saved   = 0;
 my $n_missing = 0;
 
 foreach my $task (@tasks)
@@ -75,6 +76,7 @@ foreach my $task (@tasks)
     if ( $record )
     {
       $admin_code_to_record->{$code} = $record;
+      $n_saved++;
     }
     else
     {
@@ -83,14 +85,16 @@ foreach my $task (@tasks)
   }
 }
 
-if( $n_missing )
-{
-  print STDERR "Missing $n_missing records.\n";
-}
-
 my $output = "admin_code_to_record.hash";
 Storable::store( $admin_code_to_record, File::Spec->catfile( $dir, $output ) );
 
 $dbh->disconnect();
 
 close $fh if $fh;
+
+print STDERR "$n_saved records saved.\n";
+
+if( $n_missing )
+{
+  print STDERR "Missing $n_missing records.\n";
+}

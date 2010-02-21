@@ -2,7 +2,7 @@ package Geo::GeoNames::DB::SQLite;
 
 =head1 NAME
 
-Geo::GeoNames::DB::SQLite
+Geo::GeoNames::DB::SQLite - Perl module for handling GeoNames.org data stored in a SQLite database. 
 
 =head1 SYNOPSIS
 
@@ -54,8 +54,8 @@ use base qw(DBI::db);
 
 =item connect()
 
-    Constructor.
-    
+Constructor.
+
     my $dbh = Geo::GeoNames::DB::SQLite->connect( $dbname );
 
 =cut
@@ -241,20 +241,32 @@ sub _init
 		       @{$self->selectall_arrayref("SELECT name FROM sqlite_master WHERE type='table'")} 
 		     );
   
-  unless( grep "geoname", @tbl_names ) 
+  unless( grep {$_ eq "geoname";} @tbl_names ) 
   { 
     $self->do( "CREATE TABLE geoname (geonameid INTEGER NOT NULL, name TEXT NOT NULL, asciiname TEXT NOT NULL, alternatenames TEXT, latitude REAL, longitude REAL, feature_class TEXT, feature_code TEXT, country_code TEXT, cc2 TEXT, admin1_code TEXT, admin2_code TEXT, admin3_code TEXT, admin4_code TEXT, population INTEGER, elevation INTEGER, gtopo30 INTEGER, timezone TEXT, modification_date TEXT, PRIMARY KEY (geonameid) )" );
   } 
   
-  unless( grep "alternate_name", @tbl_names ) 
+  unless( grep {$_ eq "alternate_name";} @tbl_names ) 
   { 
     $self->do( "CREATE TABLE alternate_name (geonameid INTEGER NOT NULL, alternate_name TEXT NOT NULL, PRIMARY KEY (geonameid, alternate_name) )" ); 
   }
   
+  # check index
+
+  my @idx_names = map( $_->[0],
+		       @{$self->selectall_arrayref("SELECT name FROM sqlite_master WHERE type='index'")}
+		     );
+
+  unless( grep {$_ eq "alternate_name_idx";} @idx_names )
+  {
+    $self->do( "CREATE INDEX alternate_name_idx ON alternate_name (alternate_name)" );
+  }
+
   return $self;
 }
 
 =back
+
 =cut
 
 1;
