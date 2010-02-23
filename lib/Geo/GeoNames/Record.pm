@@ -44,7 +44,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( );
 
-our $VERSION = '0.09';
+our $VERSION = '0.11';
 
 use Carp ();
 use Data::Dumper ();
@@ -348,6 +348,42 @@ Compare records based on their geonameids.
 sub op_eq
 {
   return ($_[0]->id eq $_[1]->id);
+}
+
+=item is_country()
+
+Return true if the record is a country.
+
+=cut
+
+sub is_country
+{
+  my $self = shift;
+  return ( $self->{feature_class} eq 'A' ) && ( $self->{feature_code} =~ /^P/ );
+}
+
+=item is_admin1()
+
+Return true if the record is a primary administrative division.
+
+=cut
+
+sub is_admin1
+{
+  my $self = shift;
+  return ( $self->{feature_class} eq 'A' ) && ( $self->{feature_code} eq 'ADM1' );
+}
+
+=item is_admin2()
+
+Return true if the record is a second-order administrative division.
+
+=cut
+
+sub is_admin2
+{
+  my $self = shift;
+  return ( $self->{feature_class} eq 'A' ) && ( $self->{feature_code} eq 'ADM2' );
 }
 
 ## private functions ##
